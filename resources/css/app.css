@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+@plugin "@tailwindcss/forms";
+@plugin "@tailwindcss/typography";
+
+/* Add Livewire cloak */
+[x-cloak] {
+    display: none !important;
+}

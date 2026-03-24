@@ -1,0 +1,46 @@
+# Task Management System — Walkthrough
+
+The Task Management System has been fully implemented, integrating **Laravel 12**, **Filament v3**, and **Livewire v3** to provide a dual-interface architecture for Administrators and Employees.
+
+### Implementation Checklist
+- ✅ **Laravel Project Setup:** Created project with `sqlite` and installed all required packages.
+- ✅ **Database & Models:** Added `role` to Users and created the [Task](file:///c:/Users/hassa/OneDrive/Desktop/TaskMaster/app/Models/Task.php#9-47) model with relationships.
+- ✅ **Authentication:** Configured Filament's session guards and built custom authentication endpoints for the Employee portal.
+- ✅ **Admin Panel (Filament):** Implemented [UserResource](file:///c:/Users/hassa/OneDrive/Desktop/TaskMaster/app/Filament/Resources/UserResource.php#14-117) and [TaskResource](file:///c:/Users/hassa/OneDrive/Desktop/TaskMaster/app/Filament/Resources/TaskResource.php#14-142) for comprehensive CRUD operations, complete with employee-scoped assignment dropdowns. Created custom [StatsOverview](file:///c:/Users/hassa/OneDrive/Desktop/TaskMaster/app/Filament/Widgets/StatsOverviewWidget.php#10-41) and [OverdueTasks](file:///c:/Users/hassa/OneDrive/Desktop/TaskMaster/app/Filament/Widgets/OverdueTasksWidget.php#11-52) widgets for the admin dashboard.
+- ✅ **Employee Frontend (Livewire):** Designed a responsive, Tailwind CSS-powered dashboard. Built the [TaskList](file:///c:/Users/hassa/OneDrive/Desktop/TaskMaster/app/Livewire/TaskList.php#8-35) Livewire component for real-time task status updates (Pending → In Progress → Completed) without page reloads.
+- ✅ **Security:** Registered custom route middlewares ([EnsureUserIsAdmin](file:///c:/Users/hassa/OneDrive/Desktop/TaskMaster/app/Http/Middleware/EnsureUserIsAdmin.php#10-25), [EnsureUserIsEmployee](file:///c:/Users/hassa/OneDrive/Desktop/TaskMaster/app/Http/Middleware/EnsureUserIsEmployee.php#10-29)) to strictly enforce separation between `/admin` and employee routes.
+- ✅ **Styling:** Setup a fully functional Tailwind CSS v4 pipeline via Laravel Vite. 
+
+---
+
+### Key Components
+
+#### Database Schema
+- **Users**: Extended with an `enum` column (`role`) defaulting to `employee`.
+- **Tasks**: Contains `title`, `description`, `due_date`, `status`, and `assigned_user_id`.
+
+#### Filament Admin Widgets
+The [StatsOverviewWidget](file:///c:/Users/hassa/OneDrive/Desktop/TaskMaster/app/Filament/Widgets/StatsOverviewWidget.php#10-41) displays metrics dynamically scoped to current conditions (`Total Open`, `Completed This Week`, [Overdue](file:///c:/Users/hassa/OneDrive/Desktop/TaskMaster/app/Models/Task.php#30-36)). The [OverdueTasksWidget](file:///c:/Users/hassa/OneDrive/Desktop/TaskMaster/app/Filament/Widgets/OverdueTasksWidget.php#11-52) lists tasks pending past their due date. 
+
+#### Livewire Task List Component
+The employee dashboard relies on [app/Livewire/TaskList.php](file:///c:/Users/hassa/OneDrive/Desktop/TaskMaster/app/Livewire/TaskList.php), which queries only tasks assigned to the currently authenticated user. Status buttons instantly dispatch an update and visually re-sort the grid without full-page reloads.
+
+---
+
+### Verification Results
+
+All features have been functionally tested using automated browser agents.
+
+**1. Role Separation**
+- Employees attempting to navigate to `/admin` are correctly blocked with a 403 Forbidden.
+- Unauthenticated users are appropriately redirected to their respective login pages.
+
+**2. Admin Dashboard**
+![Admin Dashboard Widget](/C:/Users/hassa/.gemini/antigravity/brain/6dacf4c6-6d6b-4b1f-900f-aa651c345594/admin_dashboard_stats_1774365284863.png)
+
+**3. Employee Portal & Livewire Updates**
+- Verified the rendering of the custom UI and testing status badge interactions.
+- An initial bug with SQLite's query compatibility was resolved by utilizing standard `CASE WHEN` SQL expressions instead of MySQL-specific `FIELD()` syntaxes.
+![Employee Dashboard](/C:/Users/hassa/.gemini/antigravity/brain/6dacf4c6-6d6b-4b1f-900f-aa651c345594/employee_dashboard_verified_1774365531315.png)
+
+**Development is now complete.** You can test the application by stopping the process and running `php artisan serve`, then navigating to `/admin` (admin@taskmaster.com / password) or `/login` (alice@taskmaster.com / password).
