@@ -1,58 +1,92 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# TaskMaster
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+TaskMaster is a modern, responsive Employee Task Management System built using the Laravel ecosystem. It features a dual-interface architecture: a powerful Filament v3 admin backend for managers and a custom Tailwind CSS + Livewire frontend for employees.
 
-## About Laravel
+## Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **Dual-Interface Architecture:** Strict separation between the Admin portal and Employee portal using middleware and route guards.
+- **Admin Panel (Filament v3):**
+  - **Dashboard:** Real-time metrics including *Total Open Tasks*, *Completed This Week*, and an *Overdue Tasks* data table.
+  - **User Management:** Create, read, update, and delete employee accounts.
+  - **Task Management:** Create tasks, set due dates, and assign them to specific employees.
+- **Employee Portal (Livewire v3):**
+  - **Custom Login:** Polished, responsive login screen exclusive to employees.
+  - **My Tasks Dashboard:** Employees view only their assigned tasks.
+  - **Real-Time Status Updates:** Instantly change a task's status (Pending -> In Progress -> Completed) without full page reloads.
+- **Role-Based Access Control:** Secure boundaries preventing unauthorized access to the admin dashboard.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Tech Stack
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **Framework:** [Laravel 12](https://laravel.com/)
+- **Admin Panel:** [Filament v3](https://filamentphp.com/)
+- **Frontend Interactivity:** [Laravel Livewire v3](https://livewire.laravel.com/)
+- **Styling:** [Tailwind CSS v4](https://tailwindcss.com/)
+- **Database:** SQLite (Default for local development)
 
-## Learning Laravel
+## Installation Guide
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### Prerequisites
+- PHP 8.2 or higher
+- Composer
+- Node.js & npm
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Setup Instructions
 
-## Laravel Sponsors
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/yourusername/TaskMaster.git
+   cd TaskMaster
+   ```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+2. **Install PHP dependencies:**
+   ```bash
+   composer install
+   ```
 
-### Premium Partners
+3. **Install NPM dependencies & build assets:**
+   ```bash
+   npm install
+   npm run build
+   ```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+4. **Environment Setup:**
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
+   *Note: Ensure `DB_CONNECTION=sqlite` is set in your `.env` file.*
 
-## Contributing
+5. **Create the SQLite database:**
+   ```bash
+   # Windows (Powershell)
+   New-Item -ItemType File -Path "database\database.sqlite" -Force
+   
+   # Mac/Linux
+   touch database/database.sqlite
+   ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+6. **Run Migrations & Seed the Database:**
+   This will migrate the schema and populate the database with a default Admin and several Demo Employees with sample tasks.
+   ```bash
+   php artisan migrate:fresh --seed
+   ```
 
-## Code of Conduct
+7. **Start the local development server:**
+   ```bash
+   php artisan serve
+   ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Usage
 
-## Security Vulnerabilities
+**Admin Panel Access**
+- URL: `http://127.0.0.1:8000/admin`
+- Email: `admin@taskmaster.com`
+- Password: `password`
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+**Employee Portal Access**
+- URL: `http://127.0.0.1:8000/login`
+- Email: `alice@taskmaster.com` (or bob/carol)
+- Password: `password`
 
 ## License
 
